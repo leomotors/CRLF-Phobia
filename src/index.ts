@@ -1,27 +1,31 @@
+import { program } from "commander";
 import globby from "globby";
 import * as fs from "node:fs";
 import chalk from "chalk";
 import ignore from "ignore";
+import { isText } from "istextorbinary";
 
-if (process.argv[2] == "--help" || process.argv[2] == "-h") {
-    console.log("crlf-phobia {glob regex}");
-}
+import { Version } from "./config.g";
+
+program
+    .name("CRLF Phobia")
+    .description("Scared of CRLF, panics if there is any CRLF exists")
+    .version(Version);
+
+program.parse();
 
 const files = globby.sync(process.argv.slice(2));
 
 function shortenFileName(str: string, len: number) {
     if (str.length > len) {
         return (
-            str.slice(0, 10) + "..." + str.slice(str.length - 37, str.length)
+            str.slice(0, 10) +
+            "..." +
+            str.slice(str.length - len + 13, str.length)
         );
     }
     return str;
 }
-
-const maxFileLength = Math.min(
-    80,
-    Math.max(...files.map((file) => file.length))
-);
 
 const ignorelists = fs.existsSync(".gitignore")
     ? fs
@@ -34,13 +38,21 @@ const ignorelists = fs.existsSync(".gitignore")
 const ig = ignore().add(ignorelists);
 const filteredFiles = ig.filter(files);
 
+const maxFileLength = Math.min(
+    80,
+    Math.max(...filteredFiles.map((file) => file.length))
+);
+
 const crlflists: string[] = [];
 
 for (const file of filteredFiles) {
-    const sfile = shortenFileName(file, 50);
+    const fileBuffer = fs.readFileSync(file);
 
-    const isCRLF = fs
-        .readFileSync(file)
+    if (!isText(null, fileBuffer)) continue;
+
+    const sfile = shortenFileName(file, maxFileLength);
+
+    const isCRLF = fileBuffer
         .toString()
         .split("\n")
         .some((line) => line.endsWith("\r"));
@@ -59,6 +71,8 @@ if (crlflists.length > 0) {
     for (const file of crlflists) {
         console.log(chalk.red(file));
     }
+    process.exit(1);
+} else {
+    console.log(chalk.green("Your folder is CRLF-Free! Yay!"));
+    process.exit(0);
 }
-
-process.exit(crlflists.length > 0 ? 1 : 0);

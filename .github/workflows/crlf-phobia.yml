@@ -5,7 +5,7 @@ on:
 
 jobs:
   main:
-    name: Iroiro na Test
+    name: NO CRLF
     runs-on: ubuntu-latest
 
     steps:

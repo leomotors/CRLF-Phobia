@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "esnext",
+        "target": "es5",
         "rootDirs": ["./src"],
         "outDir": "./dist",
         "esModuleInterop": true,
