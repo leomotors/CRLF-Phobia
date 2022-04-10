@@ -1,9 +1,6 @@
 name: CRLF Phobia
 
 on:
-  - push
-
-on:
   push:
 
 jobs:
