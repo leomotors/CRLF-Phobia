@@ -1,9 +1,9 @@
+import chalk from "chalk";
 import { program } from "commander";
 import globby from "globby";
-import * as fs from "node:fs";
-import chalk from "chalk";
 import ignore from "ignore";
 import { isText } from "istextorbinary";
+import * as fs from "node:fs";
 
 import { Version } from "./config.g";
 
@@ -19,23 +19,29 @@ const files = globby.sync(process.argv.slice(2));
 function shortenFileName(str: string, len: number) {
     if (str.length > len) {
         return (
-            str.slice(0, 10) +
+            str.slice(0, 20) +
             "..." +
-            str.slice(str.length - len + 13, str.length)
+            str.slice(str.length - len + 23, str.length)
         );
     }
     return str;
 }
 
-const ignorelists = fs.existsSync(".gitignore")
-    ? fs
-          .readFileSync(".gitignore")
-          .toString()
-          .split("\n")
-          .filter((line) => line.length && !line.startsWith("#"))
-    : [];
+const ig = ignore();
+const ignoreFiles = [".crlfignore", ".gitignore"];
 
-const ig = ignore().add(ignorelists);
+for (const ignoreFile of ignoreFiles) {
+    if (!fs.existsSync(ignoreFile)) continue;
+
+    ig.add(
+        fs
+            .readFileSync(ignoreFile)
+            .toString()
+            .split("\n")
+            .filter((line) => line.length && !line.startsWith("#"))
+    );
+}
+
 const filteredFiles = ig.filter(files);
 
 const maxFileLength = Math.min(
