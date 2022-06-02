@@ -9,7 +9,7 @@ Run this simple ~~inefficient~~ app to scan your project files and it will warn
 you if there is a file with CRLF endings.
 
 This app will ignore files ignored by .gitignore by default if exists, It also ignores binary files.
-You cannot add or remove ignore files right now, ~~because I'm lazy~~
+You can add or remove ignore files by using adding .crlfignore to the same level.
 
 ### Installation:
 
@@ -52,8 +52,6 @@ a *single CRLF can survive!*
 
 - Auto-Transform CRLF into LF
 
-- Add/Remove ignore lists
-
 ## Advanced Usage
 
 Run before test:
@@ -80,8 +78,6 @@ jobs:
         uses: actions/checkout@v2
       - name: Yarn Cache
         uses: c-hive/gha-yarn-cache@v2
-      - name: Add CRLF-Phobia
-        run: yarn add crlf-phobia
       - name: Run CRLF-Phobia
-        run: yarn crlf-phobia *
+        run: npx crlf-phobia *
 ```
