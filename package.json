@@ -1,6 +1,6 @@
 {
   "name": "crlf-phobia",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Scared of CRLF",
   "main": "index.js",
   "repository": "https://github.com/Leomotors/CRLF-Phobia",

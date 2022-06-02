@@ -28,7 +28,7 @@ function shortenFileName(str: string, len: number) {
 }
 
 const ig = ignore();
-const ignoreFiles = [".crlfignore", ".gitignore"];
+const ignoreFiles = [".gitignore", ".crlfignore"];
 
 for (const ignoreFile of ignoreFiles) {
     if (!fs.existsSync(ignoreFile)) continue;
