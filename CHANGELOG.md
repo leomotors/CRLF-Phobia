@@ -2,6 +2,10 @@
 
 All notable change will be noted here
 
+## [1.2.0] - 2023-05-18
+
+- Fix bug
+
 ## [1.1.0] - 2023-05-18
 
 - Added `.git` to ignored list

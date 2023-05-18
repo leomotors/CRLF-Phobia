@@ -1,4 +1,3 @@
 *
-!dist/**/*.{js}
-!bin/**/*
-*.tsbuildinfo
+!dist/*.js
+!bin
