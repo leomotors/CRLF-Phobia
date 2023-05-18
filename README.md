@@ -22,7 +22,7 @@ npm i -D crlf-phobia # To hook with unit test locally
 
 ```bash
 crlf-phobia *.cpp # All CPP
-crlf-phobia * # All Files exclude gitignored (for zsh, for PowerShell idk)
+crlf-phobia * .* # All Files exclude gitignored (for zsh, for PowerShell idk)
 ```
 
 *Note*: CRLF-Phobia support both shell glob (Glob done by shell before parsing argv into program) and also shipped with glob ~~in case your shell is lazy.~~
@@ -48,16 +48,12 @@ a *single CRLF can survive!*
 
 - Can only detect CRLF, because who use CR nowadays?
 
-## TODO
-
-- Auto-Transform CRLF into LF
-
 ## Advanced Usage
 
 Run before test:
 
 ```json
-"test": "crlf-phobia * && yarn real-test"
+"test": "crlf-phobia * .* && pnpm real-test"
 ```
 
 Run with GitHub Workflow
@@ -75,9 +71,10 @@ jobs:
 
     steps:
       - name: actions/checkout
-        uses: actions/checkout@v2
-      - name: Yarn Cache
-        uses: c-hive/gha-yarn-cache@v2
+        uses: actions/checkout@v3
+
+      # Do anything you want
+
       - name: Run CRLF-Phobia
-        run: npx crlf-phobia *
+        run: npx crlf-phobia * .*
 ```

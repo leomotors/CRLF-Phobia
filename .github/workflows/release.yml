@@ -6,18 +6,51 @@ on:
       - "*.*"
 
 jobs:
-  main:
+  release:
     name: Publish Release
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Publish Release
         uses: Leomotors/auto-publish-release@main
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_TITLE: "CRLF Phobia {VERSION}"
-          VERSION_MUST_INCREASE: true
-          TAG: ${{ github.ref }}
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          title: "CRLF Phobia"
+          tag: ${{ github.ref }}
+
+  npm:
+    name: Publish Package
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: Setup node with cache
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Publish Package
+        run: |
+          echo //registry.npmjs.org/:_authToken=$NPM_TOKEN >> .npmrc
+          pnpm publish --no-git-checks
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true

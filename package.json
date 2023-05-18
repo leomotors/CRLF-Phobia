@@ -1,31 +1,32 @@
 {
   "name": "crlf-phobia",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Scared of CRLF",
-  "main": "index.js",
+  "type": "module",
   "repository": "https://github.com/Leomotors/CRLF-Phobia",
   "author": "Leomotors",
   "license": "MIT",
   "scripts": {
-    "build": "lm-config && tsc"
+    "build": "lm-config && tsc",
+    "prepack": "rm -rf dist && pnpm build"
   },
   "bin": {
-    "crlf-phobia": "./bin/cli.js"
+    "crlf-phobia": "./bin/cli.mjs"
   },
   "devDependencies": {
     "@leomotors/scripts": "^3.1.0",
-    "@types/node": "^17.0.38",
-    "@typescript-eslint/eslint-plugin": "^5.27.0",
-    "@typescript-eslint/parser": "^5.27.0",
-    "eslint": "^8.16.0",
-    "prettier": "^2.6.2",
-    "typescript": "^4.7.2"
+    "@types/node": "^20.2.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.6",
+    "@typescript-eslint/parser": "^5.59.6",
+    "eslint": "^8.40.0",
+    "prettier": "^2.8.8",
+    "typescript": "^5.0.4"
   },
   "dependencies": {
-    "chalk": "4",
-    "commander": "^9.3.0",
-    "globby": "11",
-    "ignore": "^5.2.0",
+    "chalk": "^5.2.0",
+    "commander": "^10.0.1",
+    "globby": "^13.1.4",
+    "ignore": "^5.2.4",
     "istextorbinary": "^6.0.0"
   }
 }
